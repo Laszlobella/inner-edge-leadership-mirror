@@ -1,103 +1,297 @@
-import Image from "next/image";
+// @ts-nocheck
+'use client';
+import React, { useState } from 'react';
 
-export default function Home() {
+export default function LeadershipMirror() {
+
+const brand = {
+  bg: 'bg-neutral-50',
+  font: 'font-serif',
+  text: 'text-black',
+};
+
+const scaleLabels = ['Never', 'Rarely', 'Sometimes', 'Often', 'Always'];
+
+const questions = [
+  // Awareness
+  { text: 'I regularly reflect on how my emotions impact my leadership decisions.', category: 'Awareness' },
+  { text: 'I seek and act on honest feedback from others, even when uncomfortable.', category: 'Awareness' },
+  { text: 'I stay calm and centered under pressure or crisis.', category: 'Awareness' },
+  { text: 'I know what triggers me and have tools to shift my state quickly.', category: 'Awareness' },
+  { text: 'I am aware of how my presence affects my team or environment.', category: 'Awareness' },
+  // Resilience
+  { text: 'I bounce back quickly from professional setbacks or disappointments.', category: 'Resilience' },
+  { text: 'I have effective ways to restore myself after high‑stress periods.', category: 'Resilience' },
+  { text: 'I stay focused and present even when demands are high.', category: 'Resilience' },
+  { text: 'I set and maintain boundaries to protect my time and energy.', category: 'Resilience' },
+  { text: 'I feel calm and grounded even when things get chaotic around me.', category: 'Resilience' },
+  // Clarity
+  { text: 'I have a clear, compelling vision that inspires me daily.', category: 'Clarity' },
+  { text: 'My team knows exactly where we’re going and why it matters.', category: 'Clarity' },
+  { text: 'I make decisions quickly and with conviction, even under pressure.', category: 'Clarity' },
+  { text: 'I take time to zoom out regularly and see the bigger picture.', category: 'Clarity' },
+  { text: 'I know the difference between what’s urgent and what’s truly important.', category: 'Clarity' },
+  // Horizon
+  { text: 'I actively invest in my personal and leadership growth.', category: 'Horizon' },
+  { text: 'I have a long‑term vision that excites and stretches me.', category: 'Horizon' },
+  { text: 'I take time to imagine and plan for the future.', category: 'Horizon' },
+  { text: 'I embrace reinvention as part of my leadership journey.', category: 'Horizon' },
+  { text: 'I have a clear sense of the legacy I want to create.', category: 'Horizon' },
+];
+
+const dimensions = ['Awareness', 'Resilience', 'Clarity', 'Horizon'];
+
+const archetypes = {
+  Firefighter: {
+    tagline: 'The heroic problem-solver always on call',
+    superpower: 'Rapid action & high-pressure resilience',
+    blindspot: 'Reactive culture, hidden burnout',
+    insight: 'What if you stopped being the hero and built systems that rarely catch fire?',
+    description:
+      'You thrive under pressure and are at your best in a crisis. But constant problem-solving can trap you in survival mode, leaving no space to elevate or evolve.',
+    patterns: [
+      'Highly reactive, always "on"',
+      'Struggles to delegate and slow down',
+      'Feels essential, but often overwhelmed',
+    ],
+    actions: [
+      'Build systems to prevent recurring issues',
+      'Practice saying "no" and creating breathing room',
+      'Shift from heroic rescuer to empowered strategist',
+    ],
+  },
+  Lighthouse: {
+    tagline: 'The visionary beacon who sometimes stands alone',
+    superpower: 'Unshakable purpose & clear long-term vision',
+    blindspot: 'Emotional distance, hard to reach',
+    insight: 'Bring people into the light, not just toward it.',
+    description:
+      'You radiate clarity and conviction, inspiring others from afar. But your elevated view can isolate you, making emotional connection a challenge.',
+    patterns: [
+      'Clear vision, but feels alone at the top',
+      'Struggles to connect with team at a deeper level',
+      'Tends to guide rather than collaborate',
+    ],
+    actions: [
+      'Invite emotional connection and feedback',
+      'Share more vulnerably to deepen trust',
+      'Balance inspiration with co-creation',
+    ],
+  },
+  Strategist: {
+    tagline: 'The master planner three moves ahead',
+    superpower: 'Precision, logic, systemic thinking',
+    blindspot: 'Avoids vulnerability & emotional risk',
+    insight: 'Your next evolution may not be smarter — it may be softer.',
+    description:
+      'You excel in structure, planning, and execution — but may avoid uncertainty and emotion. Growth lies in embracing what logic alone can’t solve.',
+    patterns: [
+      'Overplans, underfeels',
+      'Struggles to trust intuition',
+      'Seeks control over flow',
+    ],
+    actions: [
+      'Lean into discomfort as a teacher',
+      'Prioritize people over process at times',
+      'Let emotions inform, not derail, your strategy',
+    ],
+  },
+  Phoenix: {
+    tagline: 'The rebuilder rising from reinvention',
+    superpower: 'Resilience, deep personal growth',
+    blindspot: 'Over-identifying with struggle',
+    insight: 'Lead as if the new chapter is already true.',
+    description:
+      'You’ve grown through fire and emerged stronger, wiser. But you may unconsciously recreate struggle as your identity. True evolution requires ease.',
+    patterns: [
+      'Feels stronger *after* breakdowns',
+      'Wary of calm — looks for the next storm',
+      'Deeply self-aware but hesitant to celebrate progress',
+    ],
+    actions: [
+      'Celebrate stability as a strength',
+      'Design a future not driven by pain',
+      'Trust that growth doesn’t require breakdown',
+    ],
+  },
+  Seeker: {
+    tagline: 'Exploring the edges of your leadership',
+    superpower: 'Curiosity & openness',
+    blindspot: 'Lack of focused direction',
+    insight: 'Clarity emerges when commitment meets curiosity.',
+    description:
+      'You’re open, reflective, and eager to grow — but can feel untethered without direction. You’re ready to claim your next chapter with intention.',
+    patterns: [
+      'Many interests, unclear focus',
+      'Big heart, not always bold action',
+      'Seeks growth, but avoids decisions',
+    ],
+    actions: [
+      'Choose one bold step this month',
+      'Name the leader you’re becoming',
+      'Move from inner work to outer expression',
+    ],
+  },
+};
+
+export default function LeadershipMirror() {
+  const [responses, setResponses] = useState({});
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSelect = (index, value) => {
+    setResponses((prev) => ({ ...prev, [index]: value }));
+  };
+
+  const calcScores = () => {
+    const totals = { Awareness: 0, Resilience: 0, Clarity: 0, Horizon: 0 };
+    const counts = { ...totals };
+
+    questions.forEach((q, i) => {
+      const val = parseInt(responses[i] || '0', 10);
+      totals[q.category] += val;
+      counts[q.category] += 1;
+    });
+
+    const percentages = {};
+    dimensions.forEach((d) => {
+      percentages[d] = Math.round((totals[d] / (counts[d] * 5)) * 100);
+    });
+    return percentages;
+  };
+  const determineArchetype = (s) => {
+  const HIGH = 70;
+  const LOW  = 60;
+  const { Awareness, Resilience, Clarity, Horizon } = s;
+
+  // 1. SPECIAL CASE – all dimensions high
+  if (Awareness >= HIGH && Resilience >= HIGH && Clarity >= HIGH && Horizon >= HIGH) {
+    return 'Lighthouse';    // choose the archetype you prefer
+  }
+
+  // 2. Existing pattern rules
+  if (Awareness < LOW && Resilience >= HIGH) return 'Firefighter';
+  if (Clarity   >= HIGH && (Awareness < LOW || Resilience < LOW)) return 'Lighthouse';
+  if (Clarity   >= HIGH && Horizon < LOW) return 'Strategist';
+  if (Resilience >= HIGH && Clarity < LOW) return 'Phoenix';
+
+  // 3. Fallback – pick by highest dimension
+  const entries = Object.entries(s).sort((a,b) => b[1] - a[1]);
+  const top = entries[0][0];
+  if (top === 'Resilience') return 'Firefighter';
+  if (top === 'Clarity')    return 'Lighthouse';
+  if (top === 'Horizon')    return 'Strategist';
+  return 'Seeker';   // true fallback only when everything ties
+};
+
+
+  const scores = calcScores();
+  const archetype = determineArchetype(scores);
+  const a = archetypes[archetype];
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <main
+  className={`${brand.bg} ${brand.font} ${brand.text} min-h-screen flex flex-col items-center p-6`}>
+      {submitted ? (
+        <div className="w-full max-w-3xl space-y-6">
+          <h1 className="text-3xl font-bold text-center mb-12">Your Inner Edge™ Leadership Mirror</h1>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          {dimensions.map((d) => (
+            <div key={d} className="bg-white rounded-2xl shadow p-4">
+              <h2 className="text-xl font-semibold mb-5">{d}</h2>
+              <div className="w-full bg-neutral-200 h-4 rounded">
+                <div className="h-4 rounded bg-orange-500" style={{ width: `${scores[d]}%` }} />
+              </div>
+              <p className="mt-1 text-sm font-medium">{scores[d]}%</p>
+            </div>
+          ))}
+
+          <div className="bg-white rounded-2xl shadow p-6 border-t-4 border-orange-500 space-y-3">
+            <h2 className="text-2xl font-bold">Archetype: {archetype}</h2>
+            <p className="italic text-neutral-600">{a.tagline}</p>
+            <p className="text-base">{a.description}</p>
+            <div className="grid md:grid-cols-3 gap-4 text-sm pt-4">
+              <div>
+                <p className="font-semibold mb-1">Superpower</p>
+                <p>{a.superpower}</p>
+              </div>
+              <div>
+                <p className="font-semibold mb-1">Blind Spot</p>
+                <p>{a.blindspot}</p>
+              </div>
+              <div>
+                <p className="font-semibold mb-1">Key Insight</p>
+                <p>{a.insight}</p>
+              </div>
+            </div>
+            <div className="pt-4 text-sm">
+              <p className="font-semibold">Patterns:</p>
+              <ul className="list-disc list-inside text-neutral-700">
+                {a.patterns.map((p, i) => <li key={i}>{p}</li>)}
+              </ul>
+              <p className="font-semibold mt-3">Suggested Actions:</p>
+              <ul className="list-disc list-inside text-neutral-700">
+                {a.actions.map((act, i) => <li key={i}>{act}</li>)}
+              </ul>
+            </div>
+          </div>
+
+          <div className="text-center pt-4">
+            <p className="mb-10 font-medium">You’ve uncovered your unique leadership edge — your strengths, your growth areas, and the patterns shaping your impact. <br />Remember, the most powerful leaders don’t just see their challenges — <span className="font-bold">they lean into their insights and take bold actions to grow.</span> <br />Your key insight invites you to reflect and evolve beyond what feels comfortable. <br /><br />If you’re ready to explore your Inner Edge™ more deeply, gain personalized guidance, and create a clear action plan, I invite you to book a one-on-one Leadership Mirror call.<br /><br /></p>
+            <a href="https://laszlobella.com/#BOOK_1" className="inline-block px-6 py-3 rounded-full font-semibold bg-orange-500 text-white hover:bg-orange-600 transition">Want to dive deeper? Book Your Leadership Mirror Call</a>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      ) : (
+        <div className="w-full max-w-3xl space-y-8">
+          <h1 className="text-3xl font-bold text-center mb-15">The Inner Edge™ Leadership Mirror</h1>
+          <p className="text-center text-neutral-700 max-w-2xl mx-auto text-base">
+            This tool helps you reflect on four essential dimensions of your leadership: Awareness, Resilience, Clarity, and Horizon. By completing this short assessment, <span className="font-bold">you’ll receive insights into your leadership archetype</span> — along with a personalized mirror of your strengths, blind spots, and growth opportunities. <br /><br />This leadership self-assessment gives you a clear reflection of how you show up — and where your next edge lies.
+  It’s not just about scoring. It’s about insight. <br /><br /><span className="font-bold">Take 5 minutes to meet the leader behind the results.</span>
+          </p>
+
+          {questions.map((q, idx) => (
+  <div key={idx} className="bg-white rounded-xl shadow p-4">
+    <p className="font-medium mb-3">
+      {idx + 1}. {q.text}
+    </p>
+
+    {/* buttons */}
+    <div className="flex justify-between mb-2">
+      {[1, 2, 3, 4, 5].map((n) => (
+        <button
+          key={n}
+          onClick={() => handleSelect(idx, String(n))}
+          className={`w-10 h-10 rounded-full border flex items-center justify-center transition ${
+            responses[idx] === String(n)
+              ? 'bg-orange-500 text-white'
+              : 'border-neutral-300 hover:bg-neutral-200'
+          }`}
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          {n}
+        </button>
+      ))}
     </div>
+
+    {/* label row – NEW */}
+    <div className="flex justify-between">
+      {scaleLabels.map((label, i) => (
+        <span key={i} className="w-10 text-center text-xs">
+          {label}
+        </span>
+      ))}
+    </div>
+  </div>
+))}
+
+          <button
+            onClick={() => setSubmitted(true)}
+            disabled={Object.keys(responses).length < questions.length}
+            className={`w-full py-3 rounded-full text-lg font-semibold transition ${Object.keys(responses).length < questions.length ? 'bg-neutral-400 cursor-not-allowed' : 'bg-orange-500 hover:bg-orange-600 text-white'}`}
+          >
+            Reveal My Mirror
+          </button>
+        </div>
+      )}
+    </main>
   );
+}
 }
