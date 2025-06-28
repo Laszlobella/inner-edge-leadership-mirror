@@ -134,7 +134,6 @@ const archetypes = {
   },
 };
 
-export default function LeadershipMirror() {
   const [responses, setResponses] = useState({});
   const [submitted, setSubmitted] = useState(false);
 
@@ -293,5 +292,4 @@ export default function LeadershipMirror() {
       )}
     </main>
   );
-}
 }
