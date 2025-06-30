@@ -180,7 +180,7 @@ export default function LeadershipMirror() {
 
       {submitted ? (
         <div className="w-full max-w-3xl space-y-6">
-          <h1 className="text-3xl font-bold text-center mb-12">Your Inner Edge™ Leadership Mirror<br /><br />Your A.R.C.H™ Scores</h1>
+          <h1 className="text-3xl font-bold text-center mb-12">Your Inner Edge™ Leadership Mirror<br /><br />Your A.R.C.H.™ Scores</h1>
 
           {dimensions.map((d) => (
             <div key={d} className="bg-white rounded-2xl shadow p-4">
