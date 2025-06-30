@@ -275,7 +275,7 @@ export default function LeadershipMirror() {
             By completing this short assessment, <span className="font-bold">you’ll receive insights into your leadership archetype</span> —
             plus a personalized mirror of your strengths, blind spots, and growth opportunities.<br /><br />
             To get the most accurate and meaningful results, take a moment to slow down.<br /><strong>Be present. Be fully open and honest in your answers.</strong><br /><br />
-            On the next page, you'll see your Leadership Archetype and can <strong>request your extended report by email.</strong>
+            On the next page, you’ll see your Leadership Archetype and can <strong>request your extended report by email.</strong>
           </p>
 
           {questions.map((q, idx) => (
