@@ -220,6 +220,7 @@ export default function LeadershipMirror() {
             {!sent ? (
               <form
                 className="bg-white max-w-md mx-auto p-6 rounded-xl shadow space-y-4"
+                style={{ backgroundColor: '#F2EFE8' }}
                 onSubmit={async (e) => {
                   e.preventDefault();
                   const result = await fetch('/api/subscribe', {
