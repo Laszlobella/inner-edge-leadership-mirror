@@ -1,6 +1,6 @@
 // @ts-nocheck
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function LeadershipMirror() {
   const brand = { bg: 'bg-neutral-50', font: 'font-serif', text: 'text-black' };
@@ -137,6 +137,12 @@ export default function LeadershipMirror() {
   const [userEmail, setUserEmail] = useState('');
   const [sent, setSent] = useState(false);
 
+  useEffect(() => {
+  if (submitted) {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }
+}, [submitted]);
+
   const calcScores = () => {
     const totals = { Awareness: 0, Resilience: 0, Clarity: 0, Horizon: 0 };
     const counts = { ...totals };
@@ -174,7 +180,7 @@ export default function LeadershipMirror() {
 
       {submitted ? (
         <div className="w-full max-w-3xl space-y-6">
-          <h1 className="text-3xl font-bold text-center mb-12">Your Inner Edge™ Leadership Mirror</h1>
+          <h1 className="text-3xl font-bold text-center mb-12">Your Inner Edge™ Leadership Mirror<br /><br />Your A.R.C.H™ Scores</h1>
 
           {dimensions.map((d) => (
             <div key={d} className="bg-white rounded-2xl shadow p-4">
@@ -208,8 +214,7 @@ export default function LeadershipMirror() {
               You’ve uncovered your unique leadership edge — your strengths, your growth areas, and the patterns shaping your impact.
               <br />Remember, the most powerful leaders don’t just see their challenges —
               <span className="font-bold"> they lean into their insights and take bold actions to grow.</span>
-              <br />Your key insight invites you to reflect and evolve beyond what feels comfortable.
-              <br /><br />If you’re ready to explore your Inner Edge™ more deeply, gain personalized guidance, and create a clear action plan, I invite you to book a one‑on‑one Leadership Mirror call.
+              <br />
             </p>
 
             {!sent ? (
@@ -219,13 +224,14 @@ export default function LeadershipMirror() {
                   e.preventDefault();
                   const result = await fetch('/api/subscribe', {
                     method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name: userName, email: userEmail, archetype }),
                   });
                   if (result.ok) setSent(true);
                 }}
               >
                 <p className="text-base text-center">
-                  If you’d like a copy of these results in your inbox, enter your name and email below.<br />
+                  If you’d like a copy of <strong>Your extended results</strong> in your inbox, enter your full name and email below.<br />
                   <strong>Don’t refresh</strong> this page or you’ll lose the data.
                 </p>
                 <input
@@ -245,13 +251,13 @@ export default function LeadershipMirror() {
                   className="w-full border rounded px-3 py-2"
                 />
                 <button type="submit" className="w-full bg-black hover:bg-orange-600 text-white font-semibold py-2 rounded-full">
-                  Email me my report
+                  Send my extended report
                 </button>
               </form>
             ) : (
               <p className="font-medium">✅ Thanks! Your personalized report will arrive shortly.</p>
             )}
-
+          <p className="font-medium"> If you’re ready to explore your Inner Edge™ more deeply, gain personalized guidance, and create a clear action plan, <strong>I invite you to book a one‑on‑one</strong> Leadership Mirror call.</p>
             <a
               href="https://laszlobella.com/#BOOK_1"
               className="inline-block px-6 py-3 rounded-full font-semibold bg-orange-500 text-white hover:bg-orange-600 transition"
@@ -267,7 +273,9 @@ export default function LeadershipMirror() {
           <p className="text-center max-w-2xl mx-auto">
             This tool helps you reflect on four essential dimensions of your leadership: Awareness, Resilience, Clarity, and Horizon.
             By completing this short assessment, <span className="font-bold">you’ll receive insights into your leadership archetype</span> —
-            plus a personalized mirror of your strengths, blind spots, and growth opportunities.
+            plus a personalized mirror of your strengths, blind spots, and growth opportunities.<br /><br />
+            To get the most accurate and meaningful results, take a moment to slow down.<br /><strong>Be present. Be fully open and honest in your answers.</strong><br /><br />
+            On the next page, you'll see your Leadership Archetype and can <strong>request your extended report by email.</strong>
           </p>
 
           {questions.map((q, idx) => (
