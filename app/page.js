@@ -232,12 +232,12 @@ export default function LeadershipMirror() {
                 }}
               >
                 <p className="text-base text-center">
-                  If you’d like a copy of <strong>Your extended results</strong> in your inbox, enter your full name and email below.<br />
+                  If you’d like a copy of <strong>Your extended results</strong> in your inbox, enter your name and email below.<br />
                   <strong>Don’t refresh</strong> this page or you’ll lose the data.
                 </p>
                 <input
                   type="text"
-                  placeholder="Full name"
+                  placeholder="Name"
                   value={userName}
                   onChange={(e)=>setUserName(e.target.value)}
                   required
